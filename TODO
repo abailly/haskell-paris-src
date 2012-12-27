@@ -1,0 +1,2 @@
+* respawn mongoDB's handle if it dies
+* read config from a text file (i.e., not Config.hs)
