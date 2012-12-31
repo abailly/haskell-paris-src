@@ -27,6 +27,7 @@ headblock = [hamlet|
     Haskell-Paris
 <style>
     .nospam{display:none} 
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="/css/metro-bootstrap.css">
 <meta name="author" content="Lucas DiCioccio">
 <meta name="description" content="archive des talks">
