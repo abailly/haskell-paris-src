@@ -108,7 +108,7 @@ main = do
                 (slides     :: [String])<- param "meetup[slides]"   >>= return . lines
                 (oId        :: ObjectId)<- param "id" >>= return . read
                 let m = newMeetup year month place sponsors summary links slides
-                replaceAndRedirect db "/talk" m oId
+                replaceAndRedirect db "/meetup" m oId
 
     close pipe
 
