@@ -1,4 +1,3 @@
-* correctly sort meetups by month
 * use url+space+title syntax for the list of links and slides
 * respawn mongoDB's handle if it dies
 * read config from a text file (i.e., not Config.hs)

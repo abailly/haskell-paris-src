@@ -1,18 +1,54 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Models.Meetup (newMeetup,year,month,place,sponsors,summary,slides,links) where
+module Models.Meetup (newMeetup,year,month,month',place,sponsors,summary,slides,links) where
 
 import Data.Bson
 import Data.BDoc
 import Data.Typeable (Typeable)
 import Data.Maybe (isJust)
+import qualified Data.Text as T
 
 type Year       = Int
-type Month      = String
+-- type Month      = String
 type Sponsor    = String
 type Link       = String
 type Slide      = String
+
+data Month = Jan | Feb | Mar | Apr 
+    | May | Jun | Jul | Aug | Sep
+    | Oct | Nov | Dec | NA
+    deriving (Show, Typeable, Eq, Ord, Enum)
+
+parseMonth :: T.Text -> Month
+parseMonth "Janvier"    = Jan
+parseMonth "Février"    = Feb
+parseMonth "Mars"       = Mar
+parseMonth "Avril"      = Apr
+parseMonth "Mai"        = May
+parseMonth "Juin"       = Jun
+parseMonth "Juillet"    = Jul
+parseMonth "Aout"       = Aug
+parseMonth "Septembre"  = Sep
+parseMonth "Octobre"    = Oct
+parseMonth "Novembre"   = Nov
+parseMonth "Décembre"   = Dec
+parseMonth _            = NA
+
+unparseMonth :: Month -> T.Text
+unparseMonth Jan = "Janvier"
+unparseMonth Feb = "Février"
+unparseMonth Mar = "Mars"
+unparseMonth Apr = "Avril"
+unparseMonth May = "Mai"
+unparseMonth Jun = "Juin"
+unparseMonth Jul = "Juillet"
+unparseMonth Aug = "Aout"
+unparseMonth Sep = "Septembre"
+unparseMonth Oct = "Octobre"
+unparseMonth Nov = "Novembre"
+unparseMonth Dec = "Décembre"
+unparseMonth _   = "NA"
 
 data Meetup = Meetup {
     year        :: Year,
@@ -24,7 +60,15 @@ data Meetup = Meetup {
     slides      :: [Slide]
     } deriving (Typeable, Show, Eq)
 
-newMeetup = Meetup
+month' = unparseMonth . month
+
+newMeetup y m p sp su l s = Meetup y m' p sp su l s
+    where m' = parseMonth $ T.pack m
+
+instance Val Month where
+    cast' (String s)    = Just $ parseMonth s
+    cast' _             = Nothing
+    val m               = String $ unparseMonth m
 
 instance Val Meetup where
     cast' (Doc d) = fromDocument d

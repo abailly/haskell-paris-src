@@ -11,7 +11,7 @@ import Text.Blaze.Html.Renderer.String (renderHtml)
 import Data.List(intercalate)
 
 formatMeetup m = [hamlet|
-    <h4>#{month m} (#{place m})
+    <h4>#{month' m} (#{place m})
     <div class="summary">
     <p>Sponsors: #{intercalate " | " $ sponsors m}
     $forall l <- (lines $ summary m)
@@ -102,7 +102,7 @@ updateMeetupForm oId meetup = [hamlet|
                 <label class="string required" for="meetup_month">
                     <abbr title="requis">*
                     Month
-                <input class="string required" id="meetup_month" maxlength="255" name="meetup[month]" placeholder="Janvier" required="required" size="20" type="text" value="#{month meetup}">
+                <input class="string required" id="meetup_month" maxlength="255" name="meetup[month]" placeholder="Janvier" required="required" size="20" type="text" value="#{month' meetup}">
             <div>
                 <label class="string required" for="meetup_place">
                     <abbr title="requis">*
