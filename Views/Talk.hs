@@ -11,10 +11,11 @@ import Text.Blaze.Html.Renderer.String (renderHtml)
 import Data.List(intercalate)
 
 formatTalk t = [hamlet|
-        <h3>#{title t} (#{show $ duration t} minutes)
-        <p>Par: #{speaker t}
-        <p>Difficulté: #{difficulty t}
-        <p>Status: #{status t}
+        <div class="#{status t}">
+            <h3>#{title t} (#{show $ duration t} minutes)
+            <p>Par: #{speaker t}
+            <p>Difficulté: #{difficulty t}
+            <p>Status: #{status t}
 |]
 
 listTalkPage talks = renderHtml $ layout [hamlet|
