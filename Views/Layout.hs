@@ -53,8 +53,9 @@ footer = [hamlet|
         Ce site a été réalisé à la base du thème metro de <a href="http://twitter.com/talkslab" target="_blank">talkslab</a>, produit par <a href="http://twitter.com/gsferreira" target="_blank">gsferreira</a>, <a href="http://twitter.com/nelsonreis" target="_blank">nelsonreis</a> and <a href="http://twitter.com/ruimlneves" target="_blank">ruimlneves</a>.
 |]
 
-groupSort :: (Eq b,Eq c,Ord c) => (a -> b) -> (a -> c) -> [a] -> [[a]]
-groupSort f g xs = groupBy f' $ sortBy g' xs
+groupSort :: (Eq b,Eq c,Ord b,Ord c) => (a -> b) -> (a -> c) -> [a] -> [[a]]
+groupSort f g xs = map (sortBy g') $ groupBy f' $ (sortBy h) xs
     where f' m1 m2 = f m1 == f m2
+          h  m1 m2 = f m1 `compare` f m2
           g' m1 m2 = g m2 `compare` g m1 -- we want decreasing
 
