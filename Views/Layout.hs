@@ -56,6 +56,6 @@ footer = [hamlet|
 groupSort :: (Eq b,Eq c,Ord b,Ord c) => (a -> b) -> (a -> c) -> [a] -> [[a]]
 groupSort f g xs = map (sortBy g') $ groupBy f' $ (sortBy h) xs
     where f' m1 m2 = f m1 == f m2
-          h  m1 m2 = f m1 `compare` f m2
+          h  m1 m2 = f m2 `compare` f m1
           g' m1 m2 = g m2 `compare` g m1 -- we want decreasing
 
