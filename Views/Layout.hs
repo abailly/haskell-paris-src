@@ -1,10 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 
-module Views.Layout (layout) where
+module Views.Layout (layout,groupSort) where
 
 import Site.Map
 import Data.Text (Text)
+import Data.List(groupBy)
+import Data.List(sortBy)
 import Text.Hamlet (hamlet,HtmlUrl)
 import Text.Blaze.Html.Renderer.String (renderHtml)
 
@@ -50,3 +52,9 @@ footer = [hamlet|
     <p>
         Ce site a été réalisé à la base du thème metro de <a href="http://twitter.com/talkslab" target="_blank">talkslab</a>, produit par <a href="http://twitter.com/gsferreira" target="_blank">gsferreira</a>, <a href="http://twitter.com/nelsonreis" target="_blank">nelsonreis</a> and <a href="http://twitter.com/ruimlneves" target="_blank">ruimlneves</a>.
 |]
+
+groupSort :: (Eq b,Eq c,Ord c) => (a -> b) -> (a -> c) -> [a] -> [[a]]
+groupSort f g xs = groupBy f' $ sortBy g' xs
+    where f' m1 m2 = f m1 == f m2
+          g' m1 m2 = g m2 `compare` g m1 -- we want decreasing
+

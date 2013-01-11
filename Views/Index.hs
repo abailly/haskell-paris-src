@@ -10,9 +10,6 @@ import Views.Meetup
 import Models.Meetup
 import Text.Hamlet (hamlet,HtmlUrl)
 import Text.Blaze.Html.Renderer.String (renderHtml)
-import Data.List(intercalate)
-import Data.List(groupBy)
-import Data.List(sortBy)
 
 homepage meetups = renderHtml $ layout [hamlet|
 <div class="row span12">
@@ -42,11 +39,6 @@ presentationText = [hamlet|
         <p>Pour se tenir informé et s'enregistrer pour le prochain meetup, merci de s'inscrire sur le <a href="http://meetup.haskell-paris.fr">compte meetup de haskell-paris</a>.
         <p>Si vous voulez présenter votre entreprise, par exemple pour embaucher ou pour présenter un produit, merci de sponsoriser un meetup en offrant un lieu d'accueil ou de la nourriture. Pour ce faire, contactez lucas<span class="nospam">nospam</span>@<span class="nospam">nospam</span>dicioccio.fr .
 |]
-
-groupSort :: (Eq b,Eq c,Ord c) => (a -> b) -> (a -> c) -> [a] -> [[a]]
-groupSort f g xs = groupBy f' $ sortBy g' xs
-    where f' m1 m2 = f m1 == f m2
-          g' m1 m2 = g m2 `compare` g m1 -- we want decreasing
 
 yearMonth m = (year m, month m)
 

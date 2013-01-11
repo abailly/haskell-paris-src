@@ -3,31 +3,35 @@
 
 module Views.Talk (listTalkPage,editTalkPage,newTalkForm,displayTalkPage) where
 
+import Data.List (sortBy)
 import Site.Map
 import Views.Layout
 import Models.Talk
 import Text.Hamlet (hamlet,HtmlUrl)
 import Text.Blaze.Html.Renderer.String (renderHtml)
-import Data.List(intercalate)
 
 formatTalk t = [hamlet|
-        <div class="#{status t}">
-            <h3>#{title t} (#{show $ duration t} minutes)
-            <p>Par: #{speaker t}
-            <p>Difficulté: #{difficulty t}
-            <p>Status: #{status t}
+<div>
+    <h4>#{title t} (#{show $ duration t} minutes)
+    <p>Par: #{speaker t}
+    <p>Difficulté: #{difficulty t}
+    <p>Status: #{status t}
 |]
+
 
 listTalkPage talks = renderHtml $ layout [hamlet|
 <div class="row span12">
     <div class="row span7">
-        $forall (t,oId) <- talks
-            ^{formatTalk t}
-            <a href="/talk/#{show oId}">Edit
+        $forall byStatus <- groupSort status' snd talks
+            <h3>#{status $ fst $ head byStatus}
+            $forall (t,oId) <- byStatus
+                ^{formatTalk t}
+                <a href="/talk/#{show oId}">Edit
     <div class="row span5">
         <h3>Nouveau talk
         ^{newTalkForm}
 |] "Liste des talks" render
+    where status' = status . fst
 
 editTalkPage talks = renderHtml $ layout [hamlet|
 <div class="row span12">
