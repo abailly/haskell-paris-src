@@ -18,12 +18,12 @@ formatMeetup m = [hamlet|
         <p>#{l}
     <p>Slides: 
         <ul>
-            $forall l <- (slides m)
-                <li><a href="#{l}">#{l}</a>
+            $forall (l,t) <- (slides m)
+                <li><a href="#{l}">#{t}</a>
     <p>Liens: 
         <ul>
-            $forall l <- (links m)
-                <li><a href="#{l}">#{l}</a>
+            $forall (l,t) <- (links m)
+                <li><a href="#{l}">#{t}</a>
 |]
 
 listMeetupPage meetups = renderHtml $ layout [hamlet|
@@ -125,13 +125,13 @@ updateMeetupForm oId meetup = [hamlet|
                     <abbr title="requis">(opt)
                     Links (un par ligne)
                 <textarea id="meetup_links" name="meetup[links]" class="text" placeholder="lorem ipsum…">
-                    #{unlines $ links meetup}
+                    #{unlines $ unparseLinks $ links meetup}
             <div>
                 <label class="string" for="meetup_slides">
                     <abbr title="optionnel">(opt)
                     Slides (un par ligne)
                 <textarea id="meetup_slides" name="meetup[slides]" class="text" placeholder="lorem ipsum…">
-                    #{unlines $ slides meetup}
+                    #{unlines $ unparseSlides $ slides meetup}
             <div>
                 <input class="button btn" name="commit" type="submit" value="Créer">
 |]

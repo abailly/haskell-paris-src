@@ -1,7 +1,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Models.Meetup (newMeetup,year,month,month',place,sponsors,summary,slides,links) where
+module Models.Meetup (
+    newMeetup,
+    year,
+    month,
+    month',
+    place,
+    sponsors,
+    summary,
+    slides,
+    links,
+    unparseLinks,
+    parseLinks,
+    unparseSlides,
+    parseSlides
+    ) where
 
 import Data.Bson
 import Data.BDoc
@@ -12,8 +26,8 @@ import qualified Data.Text as T
 type Year       = Int
 -- type Month      = String
 type Sponsor    = String
-type Link       = String
-type Slide      = String
+type Link       = (String,String)
+type Slide      = (String,String)
 
 data Month = Jan | Feb | Mar | Apr 
     | May | Jun | Jul | Aug | Sep
@@ -62,7 +76,7 @@ data Meetup = Meetup {
 
 month' = unparseMonth . month
 
-newMeetup y m p sp su l s = Meetup y m' p sp su l s
+newMeetup y m p sp su l s = Meetup y m' p sp su (parseLinks l) (parseSlides s)
     where m' = parseMonth $ T.pack m
 
 instance Val Month where
@@ -83,8 +97,8 @@ instance BDoc Meetup where
         "place"     := val p,
         "sponsors"  := val sp,
         "summary"   := val su,
-        "links"     := val l,
-        "slides"    := val sl
+        "links"     := (val $ unparseLinks l),
+        "slides"    := (val $ unparseSlides sl)
         ]
 
     fromDocument doc = do
@@ -93,7 +107,26 @@ instance BDoc Meetup where
         p   <- pick "place"
         sp  <- pick "sponsors"
         su  <- pick "summary"
-        l   <- pick "links"
-        sl  <- pick "slides"
+        rawl    <- pick "links"
+        rawsl   <- pick "slides"
+        let  l  = parseLinks rawl
+             sl = parseLinks rawsl
         return $ Meetup y m p sp su l sl
             where pick f = look f doc >>= cast
+
+unparsePairs :: [(String,String)] -> [String]
+unparsePairs xs = map unparsePair xs
+    where unparsePair (a,b) = a ++ (' ':b)
+
+parsePairs :: [String] -> [(String,String)]
+parsePairs xs = map (parsePair . sanitize) xs
+    where   sanitize      = filter (/= '\r')
+            parsePair str = if (' ' `elem` str)
+                          then (url,text)
+                          else (str,str)
+                                    where (url,' ':text) = break (== ' ') str
+
+unparseLinks    = unparsePairs
+parseLinks      = parsePairs
+unparseSlides   = unparsePairs
+parseSlides     = parsePairs
