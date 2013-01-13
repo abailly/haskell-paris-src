@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module Models.Talk (
-    Talk(Talk),
+    Talk (Talk),
     submittedTalk,speaker,title,duration,difficulty,status
     ) where
 
@@ -24,6 +24,8 @@ data Talk = Talk {
     status      :: Status
     } deriving (Show, Eq, Typeable)
 
+emptyTalk = Talk "" "" 0 "" ""
+
 submittedTalk :: Speaker -> String -> Duration -> Difficulty -> Talk
 submittedTalk sp t du di = Talk sp t du di "submitted"
 
@@ -33,6 +35,7 @@ instance Val Talk where
     val m         = Doc $ toDocument m
 
 instance BDoc Talk where
+    model        = emptyTalk
     collection _ = "talk"
     toDocument (Talk sp t du di st) = [
                         "speaker-id"    =: sp, 

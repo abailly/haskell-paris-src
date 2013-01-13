@@ -2,6 +2,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module Models.Meetup (
+    Meetup (),
     newMeetup,
     year,
     month,
@@ -76,6 +77,8 @@ data Meetup = Meetup {
 
 month' = unparseMonth . month
 
+emptyMeetup = newMeetup 2042 "Janvier" "" [] "" [] []
+
 newMeetup y m p sp su l s = Meetup y m' p sp su (parseLinks l) (parseSlides s)
     where m' = parseMonth $ T.pack m
 
@@ -90,6 +93,7 @@ instance Val Meetup where
     val m         = Doc $ toDocument m
 
 instance BDoc Meetup where
+    model        = emptyMeetup
     collection _ = "meetup"
     toDocument (Meetup y m p sp su l sl) = [
         "year"      := val y,

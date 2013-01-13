@@ -26,12 +26,29 @@ formatMeetup m = [hamlet|
                 <li><a href="#{l}">#{t}</a>
 |]
 
+editMeetupButton oId = [hamlet|
+<form accept-charset="UTF-8" action="/meetup/#{show oId}" class="form" id="edit_meetup" >
+    <div>
+        <input class="button btn" name="commit" type="submit" value="Edit">
+|]
+
+deleteMeetupButton oId = [hamlet|
+<form accept-charset="UTF-8" action="/meetup/#{show oId}" class="form" id="delete_meetup" method="post">
+    <div>
+        <input name="wanted-http-method" type="hidden" value="DELETE">
+    <div>
+        <input class="button btn" name="commit" type="submit" value="Delete">
+|]
+
 listMeetupPage meetups = renderHtml $ layout [hamlet|
 <div class="row span12">
     <div class="row span7">
         $forall (m,oId) <- meetups
             ^{formatMeetup m}
-            <a href="/meetup/#{show oId}">Edit
+            <div>
+                ^{editMeetupButton oId}
+                ^{deleteMeetupButton oId}
+            <hr>
     <div class="row span5">
         <h3>Nouveau meetup
         ^{newMeetupForm}

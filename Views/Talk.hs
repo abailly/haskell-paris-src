@@ -18,6 +18,20 @@ formatTalk t = [hamlet|
     <p>Status: #{status t}
 |]
 
+editTalkButton oId = [hamlet|
+<form accept-charset="UTF-8" action="/talk/#{show oId}" class="form" id="edit_talk" >
+    <div>
+        <input class="button btn" name="commit" type="submit" value="Edit">
+|]
+
+deleteTalkButton oId = [hamlet|
+<form accept-charset="UTF-8" action="/talk/#{show oId}" class="form" id="delete_talk" method="post">
+    <div>
+        <input name="wanted-http-method" type="hidden" value="DELETE">
+    <div>
+        <input class="button btn" name="commit" type="submit" value="Delete">
+|]
+
 
 listTalkPage talks = renderHtml $ layout [hamlet|
 <div class="row span12">
@@ -26,7 +40,10 @@ listTalkPage talks = renderHtml $ layout [hamlet|
             <h3>#{status $ fst $ head byStatus}
             $forall (t,oId) <- byStatus
                 ^{formatTalk t}
-                <a href="/talk/#{show oId}">Edit
+                <div>
+                    ^{editTalkButton oId}
+                    ^{deleteTalkButton oId}
+                <hr>
     <div class="row span5">
         <h3>Nouveau talk
         ^{newTalkForm}

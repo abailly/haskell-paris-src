@@ -63,6 +63,11 @@ main = do
             let query = (select ["_id" := ObjId oId] "talk") {limit = 1}
             findAndRender db query (if auth; then editTalkPage; else displayTalkPage)
 
+        deleteFromPost "/talk/:id" $ do
+            adminOnly $ do
+                (oId        :: ObjectId)<- param "id" >>= return . read
+                deleteAndRedirect db "/talk" (model :: Talk) oId
+
         W.post "/talk/:id" $ do
             adminOnly $ do
                 (oId :: ObjectId) <- param "id" >>= return . read
@@ -97,6 +102,11 @@ main = do
                 let m = newMeetup year month place sponsors summary links slides
                 insertAndRedirect db "/meetup" m
 
+        deleteFromPost "/meetup/:id" $ do
+            adminOnly $ do
+                (oId        :: ObjectId)<- param "id" >>= return . read
+                deleteAndRedirect db "/meetup" (model :: Meetup) oId
+
         W.post "/meetup/:id" $ do
             adminOnly $ do
                 (year       :: Int)     <- param "meetup[year]"
@@ -114,6 +124,15 @@ main = do
 
 
 -- helpers --
+
+
+-- a Scotty handler that handles HTTP-POST as HTTP-DELETE 
+-- this method uses the wanted-http-method field of the HTTP-POST
+-- note that, this function must be called before any "POST" handlers on same paths
+deleteFromPost path deleteAction = W.post path $ do
+    (param "wanted-http-method" >>= handle) `rescue` (\_ -> W.next)
+        where handle "DELETE"    = deleteAction
+              handle x           = W.next 
 
 -- Like MongoDB's find function except that it turns BDoc instances to their corresponding type.
 -- return values are pairs of (instance/ObjectId) because BDoc instances should not worry about 
@@ -145,8 +164,17 @@ replaceAndRedirect db path obj oId = do
             liftIO $ print act
             either (\_ -> raise "could not replace in DB") (\_ -> redirect' path (ObjId oId)) act
 
+deleteAndRedirect db path model oId = do
+            act <- liftIO $ db $ delete' model  oId
+            liftIO $ print act
+            either (\_ -> raise "could not delete from DB") (\_ -> redirect path) act
+
+
 -- Like MongoDB's insert but on a BDoc instance
 insert' doc         = M.insert (collection doc) (toDocument doc)
+
+-- Like MongoDB's delete but from a BDoc instance's model
+delete' doc oId     = M.delete ( select ["_id" := ObjId oId] $ collection doc)
 
 -- Like MongoDB's replace (i.e., item update) but on a BDoc instance.
 -- Use the ObjectId field as a replacement key.
