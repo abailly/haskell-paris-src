@@ -15,7 +15,7 @@ layout f subtitle = [hamlet|
 <head>
     ^{headblock}
 <body>
-    <a href="https://github.com/lucasdicioccio/haskell-paris-src"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/haskell-paris/haskell-paris-src"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
     <div class="container">
         <div class="row-fluid span12">
             ^{header subtitle}
@@ -49,6 +49,9 @@ header subtitle = [hamlet|
 footer :: HtmlUrl Page
 footer = [hamlet|
 <footer class="footer">
+    <p>
+            <a href="https://twitter.com/haskellparis" alt="compte Twitter">Twitter</a> | 
+            <a href="https://github.com/haskell-paris" alt="compte GitHub">GitHub</a>
     <p>
         Ce site a été réalisé à la base du thème metro de <a href="http://twitter.com/talkslab" target="_blank">talkslab</a>, produit par <a href="http://twitter.com/gsferreira" target="_blank">gsferreira</a>, <a href="http://twitter.com/nelsonreis" target="_blank">nelsonreis</a> and <a href="http://twitter.com/ruimlneves" target="_blank">ruimlneves</a>.
 |]
