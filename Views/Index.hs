@@ -20,6 +20,8 @@ homepage meetups = renderHtml $ layout [hamlet|
         ^{newTalkForm}
 <h2>Past Meetups
 ^{formatMeetups meetups}
+<h2>Outside Paris
+^{notInParisText}
 |] "Site dédié au groupe Haskell Paris" render
 
 
@@ -38,6 +40,11 @@ presentationText = [hamlet|
         <p>Nous essayons de nous rencontrer le <strong>second Lundi du mois</strong>.
         <p>Pour se tenir informé et s'enregistrer pour le prochain meetup, merci de s'inscrire sur le <a href="http://meetup.haskell-paris.fr">compte meetup de haskell-paris</a>.
         <p>Si vous voulez présenter votre entreprise, par exemple pour embaucher ou pour présenter un produit, merci de sponsoriser un meetup en offrant un lieu d'accueil ou de la nourriture. Pour ce faire, contactez lucas<span class="nospam">nospam</span>@<span class="nospam">nospam</span>dicioccio.fr .
+|]
+
+notInParisText = [hamlet|
+        <p>Vous n'êtes pas à Paris? On vous encourage à créer des évènements Haskell dans votre région et aussi à passer nous voir. On peut éventuellement vous prêter main forte. Faîtes-nous signe si vous êtes de passage à Paris et avez une présentation Haskell toute prête ou encore si vous vous contenterez de boire un coup avec un ou des gens intéressés par Haskell ici.
+        <p>Nous vous recommendons le site <a href="http://haskell.fr/">Haskell.Fr</a> pour trouver des resources Haskell en Français ainsi que des Haskellers près de chez vous. Nous utilisons également leur canal IRC (#haskell-fr sur Freenode).
 |]
 
 yearMonth m = (year m, month m)
