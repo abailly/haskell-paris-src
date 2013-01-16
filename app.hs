@@ -2,6 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ExtendedDefaultRules #-}
+{-# LANGUAGE DoAndIfThenElse #-}
 
 import Config
 
@@ -61,7 +62,7 @@ main = do
             auth <- isAdmin
             (oId :: ObjectId) <- param "id" >>= return . read
             let query = (select ["_id" := ObjId oId] "talk") {limit = 1}
-            findAndRender db query (if auth; then editTalkPage; else displayTalkPage)
+            findAndRender db query (if auth ; then editTalkPage ; else displayTalkPage)
 
         deleteFromPost "/talk/:id" $ do
             adminOnly $ do
