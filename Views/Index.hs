@@ -44,7 +44,7 @@ presentationText = [hamlet|
 
 notInParisText = [hamlet|
         <p>Vous n'êtes pas à Paris? On vous encourage à créer des évènements Haskell dans votre région et aussi à passer nous voir. On peut éventuellement vous prêter main forte. Faîtes-nous signe si vous êtes de passage à Paris et avez une présentation Haskell toute prête ou encore si vous vous contenterez de boire un coup avec un ou des gens intéressés par Haskell ici.
-        <p>Nous vous recommendons le site <a href="http://haskell.fr/">Haskell.Fr</a> pour trouver des resources Haskell en Français ainsi que des Haskellers près de chez vous. Nous utilisons également leur canal IRC (#haskell-fr sur Freenode).
+        <p>Nous vous recommendons le site <a href="http://haskell.fr/">Haskell.Fr</a> pour trouver des ressources Haskell en Français ainsi que des Haskellers près de chez vous. Nous utilisons également leur canal IRC (#haskell-fr sur Freenode).
 |]
 
 yearMonth m = (year m, month m)
